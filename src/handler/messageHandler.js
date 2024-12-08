@@ -205,6 +205,11 @@ function init(bot) {
                     await bot.sendMessage(chatId, "✅ *Благодарим вас за ответ!*", { parse_mode: "Markdown" });
                 } else if (action === "no") {
                     review.couldCall = false;
+                    await AppealSchema.create({
+                        userId: user.id,
+                        placeId: review.placeId,
+                        text: `Не принят звонок от пользователя(${user.userId})`
+                    });
                     await bot.sendMessage(chatId, "📝 *Информация будет передана для рассмотрения.*", { parse_mode: "Markdown" });
                 } else if (action === "complaint") {
                     waitingComplaint[chatId] = reviewId;
@@ -335,7 +340,7 @@ function init(bot) {
                         keyboard.push([{ text: place.name }]);
                     }
                 }
-                
+
                 if (foundPlaces === 0) {
                     const keyboard = await createDivisionsKeyboard(user);
                     await bot.sendMessage(chatId, "*К сожалению, в вашем районе нет подходящих организаций.*", keyboard);
