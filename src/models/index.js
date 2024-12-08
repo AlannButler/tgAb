@@ -7,6 +7,10 @@ const UserSchema = mongoose.model("TgBotAbai-Users", new mongoose.Schema({
         unique: true,
         required: true,
     },
+    chatId: {
+        type: String,
+        required: true,
+    },
     isAdmin: {
         type: Boolean,
         default: false,
@@ -23,8 +27,34 @@ const UserSchema = mongoose.model("TgBotAbai-Users", new mongoose.Schema({
     }
 }));
 
+const AppealSchema = mongoose.model("TgBotAbai-Appeal", new mongoose.Schema({
+    userId: {
+        ref: "TgBotAbai-Users",
+        type: String,
+        required: true,
+    },
+    placeId: {
+        ref: "TgBotAbai-Places",
+        type: String,
+        required: true,
+    },
+    date: {
+        type: Date,
+        required: true,
+        default: Date.now,
+    },
+    text: {
+        type: String,
+        required: true,
+    },
+    hidden: {
+        type: Boolean,
+        default: false,
+    }
+}));
+
 const ReviewSchema = mongoose.model("TgBotAbai-Reviews", new mongoose.Schema({
-    id: {
+    placeId: {
         ref: "TgBotAbai-Places",
         type: String,
         required: true,
@@ -39,10 +69,19 @@ const ReviewSchema = mongoose.model("TgBotAbai-Reviews", new mongoose.Schema({
         required: true,
         default: false,
     },
+    remindAt: {
+        type: Date,
+        required: true,
+    },
+    reminded: {
+        type: Boolean,
+        default: false
+    },
+    answeredAt: Date
 }));
 
 const PlaceSchema = mongoose.model("TgBotAbai-Places", new mongoose.Schema({
-    id: {
+    placeId: {
         type: String,
         unique: true,
         required: true,
@@ -66,6 +105,10 @@ const PlaceSchema = mongoose.model("TgBotAbai-Places", new mongoose.Schema({
         type: Number,
         required: true,
     },
+    state: {
+        type: String,
+        required: true
+    },
     division: {
         type: String,
         required: true,
@@ -73,4 +116,4 @@ const PlaceSchema = mongoose.model("TgBotAbai-Places", new mongoose.Schema({
     }
 }));
 
-module.exports = { UserSchema, ReviewSchema, PlaceSchema };
+module.exports = { UserSchema, AppealSchema, ReviewSchema, PlaceSchema };
